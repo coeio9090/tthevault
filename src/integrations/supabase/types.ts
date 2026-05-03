@@ -14,7 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      vault_files: {
+        Row: {
+          classification: string
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          title: string
+          week_number: number | null
+        }
+        Insert: {
+          classification?: string
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          title: string
+          week_number?: number | null
+        }
+        Update: {
+          classification?: string
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          title?: string
+          week_number?: number | null
+        }
+        Relationships: []
+      }
+      vault_intelligence: {
+        Row: {
+          author_codename: string
+          category: string
+          content: string
+          created_at: string
+          headline: string
+          id: string
+          image_url: string | null
+        }
+        Insert: {
+          author_codename?: string
+          category?: string
+          content?: string
+          created_at?: string
+          headline: string
+          id?: string
+          image_url?: string | null
+        }
+        Update: {
+          author_codename?: string
+          category?: string
+          content?: string
+          created_at?: string
+          headline?: string
+          id?: string
+          image_url?: string | null
+        }
+        Relationships: []
+      }
+      vault_ticker: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
