@@ -123,3 +123,7 @@
 @keyframes bootIn {
   to { opacity: 1; }
 }
+
+.vault-img {
+  filter: brightness(0.35) grayscale(1) contrast(1.2);
+}
