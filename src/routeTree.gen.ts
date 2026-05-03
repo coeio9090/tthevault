@@ -9,38 +9,198 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MindsRouteImport } from './routes/minds'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as IntelligenceRouteImport } from './routes/intelligence'
+import { Route as FilesRouteImport } from './routes/files'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MindsSlugRouteImport } from './routes/minds.$slug'
+import { Route as IntelligenceIdRouteImport } from './routes/intelligence.$id'
+import { Route as FilesIdRouteImport } from './routes/files.$id'
 
+const MindsRoute = MindsRouteImport.update({
+  id: '/minds',
+  path: '/minds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceRoute = IntelligenceRouteImport.update({
+  id: '/intelligence',
+  path: '/intelligence',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FilesRoute = FilesRouteImport.update({
+  id: '/files',
+  path: '/files',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MindsSlugRoute = MindsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => MindsRoute,
+} as any)
+const IntelligenceIdRoute = IntelligenceIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => IntelligenceRoute,
+} as any)
+const FilesIdRoute = FilesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => FilesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/community': typeof CommunityRoute
+  '/files': typeof FilesRouteWithChildren
+  '/intelligence': typeof IntelligenceRouteWithChildren
+  '/login': typeof LoginRoute
+  '/minds': typeof MindsRouteWithChildren
+  '/files/$id': typeof FilesIdRoute
+  '/intelligence/$id': typeof IntelligenceIdRoute
+  '/minds/$slug': typeof MindsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/community': typeof CommunityRoute
+  '/files': typeof FilesRouteWithChildren
+  '/intelligence': typeof IntelligenceRouteWithChildren
+  '/login': typeof LoginRoute
+  '/minds': typeof MindsRouteWithChildren
+  '/files/$id': typeof FilesIdRoute
+  '/intelligence/$id': typeof IntelligenceIdRoute
+  '/minds/$slug': typeof MindsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/community': typeof CommunityRoute
+  '/files': typeof FilesRouteWithChildren
+  '/intelligence': typeof IntelligenceRouteWithChildren
+  '/login': typeof LoginRoute
+  '/minds': typeof MindsRouteWithChildren
+  '/files/$id': typeof FilesIdRoute
+  '/intelligence/$id': typeof IntelligenceIdRoute
+  '/minds/$slug': typeof MindsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/community'
+    | '/files'
+    | '/intelligence'
+    | '/login'
+    | '/minds'
+    | '/files/$id'
+    | '/intelligence/$id'
+    | '/minds/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/community'
+    | '/files'
+    | '/intelligence'
+    | '/login'
+    | '/minds'
+    | '/files/$id'
+    | '/intelligence/$id'
+    | '/minds/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/community'
+    | '/files'
+    | '/intelligence'
+    | '/login'
+    | '/minds'
+    | '/files/$id'
+    | '/intelligence/$id'
+    | '/minds/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  CommunityRoute: typeof CommunityRoute
+  FilesRoute: typeof FilesRouteWithChildren
+  IntelligenceRoute: typeof IntelligenceRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  MindsRoute: typeof MindsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/minds': {
+      id: '/minds'
+      path: '/minds'
+      fullPath: '/minds'
+      preLoaderRoute: typeof MindsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence': {
+      id: '/intelligence'
+      path: '/intelligence'
+      fullPath: '/intelligence'
+      preLoaderRoute: typeof IntelligenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/files': {
+      id: '/files'
+      path: '/files'
+      fullPath: '/files'
+      preLoaderRoute: typeof FilesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +208,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/minds/$slug': {
+      id: '/minds/$slug'
+      path: '/$slug'
+      fullPath: '/minds/$slug'
+      preLoaderRoute: typeof MindsSlugRouteImport
+      parentRoute: typeof MindsRoute
+    }
+    '/intelligence/$id': {
+      id: '/intelligence/$id'
+      path: '/$id'
+      fullPath: '/intelligence/$id'
+      preLoaderRoute: typeof IntelligenceIdRouteImport
+      parentRoute: typeof IntelligenceRoute
+    }
+    '/files/$id': {
+      id: '/files/$id'
+      path: '/$id'
+      fullPath: '/files/$id'
+      preLoaderRoute: typeof FilesIdRouteImport
+      parentRoute: typeof FilesRoute
+    }
   }
 }
 
+interface FilesRouteChildren {
+  FilesIdRoute: typeof FilesIdRoute
+}
+
+const FilesRouteChildren: FilesRouteChildren = {
+  FilesIdRoute: FilesIdRoute,
+}
+
+const FilesRouteWithChildren = FilesRoute._addFileChildren(FilesRouteChildren)
+
+interface IntelligenceRouteChildren {
+  IntelligenceIdRoute: typeof IntelligenceIdRoute
+}
+
+const IntelligenceRouteChildren: IntelligenceRouteChildren = {
+  IntelligenceIdRoute: IntelligenceIdRoute,
+}
+
+const IntelligenceRouteWithChildren = IntelligenceRoute._addFileChildren(
+  IntelligenceRouteChildren,
+)
+
+interface MindsRouteChildren {
+  MindsSlugRoute: typeof MindsSlugRoute
+}
+
+const MindsRouteChildren: MindsRouteChildren = {
+  MindsSlugRoute: MindsSlugRoute,
+}
+
+const MindsRouteWithChildren = MindsRoute._addFileChildren(MindsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  CommunityRoute: CommunityRoute,
+  FilesRoute: FilesRouteWithChildren,
+  IntelligenceRoute: IntelligenceRouteWithChildren,
+  LoginRoute: LoginRoute,
+  MindsRoute: MindsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
