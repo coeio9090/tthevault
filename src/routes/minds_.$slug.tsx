@@ -4,7 +4,7 @@ import { AuthGate } from "@/components/AuthGate";
 import { VaultShell } from "@/components/VaultShell";
 import { MINDS } from "@/lib/vault";
 
-export const Route = createFileRoute("/minds/$slug")({ component: MindChat });
+export const Route = createFileRoute("/minds_/$slug")({ component: MindChat });
 
 type Msg = { role: "user" | "mind"; text: string };
 

@@ -3,7 +3,7 @@ import { AuthGate } from "@/components/AuthGate";
 import { VaultShell } from "@/components/VaultShell";
 import { INTEL } from "@/lib/vault";
 
-export const Route = createFileRoute("/intelligence/$id")({ component: IntelReader });
+export const Route = createFileRoute("/intelligence_/$id")({ component: IntelReader });
 
 function IntelReader() {
   const { id } = Route.useParams();

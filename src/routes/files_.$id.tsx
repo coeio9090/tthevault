@@ -4,7 +4,7 @@ import { AuthGate } from "@/components/AuthGate";
 import { VaultShell } from "@/components/VaultShell";
 import { FILES } from "@/lib/vault";
 
-export const Route = createFileRoute("/files/$id")({ component: FileReader });
+export const Route = createFileRoute("/files_/$id")({ component: FileReader });
 
 function FileReader() {
   const { id } = Route.useParams();
