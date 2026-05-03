@@ -1,4 +1,4 @@
-export const ACCESS_CODE = "972137641";
+export const ACCESS_CODE = "9321983";
 export const ADMIN_PASSWORD = "IBRA";
 export const COMMUNITY_URL = "https://secret-whisper-archive.lovable.app/";
 
