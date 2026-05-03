@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MindsRouteImport } from './routes/minds'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntelligenceRouteImport } from './routes/intelligence'
 import { Route as FilesRouteImport } from './routes/files'
@@ -16,6 +17,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as IntelligenceIdRouteImport } from './routes/intelligence.$id'
 import { Route as FilesIdRouteImport } from './routes/files.$id'
 
+const MindsRoute = MindsRouteImport.update({
+  id: '/minds',
+  path: '/minds',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/files': typeof FilesRouteWithChildren
   '/intelligence': typeof IntelligenceRouteWithChildren
   '/login': typeof LoginRoute
+  '/minds': typeof MindsRoute
   '/files/$id': typeof FilesIdRoute
   '/intelligence/$id': typeof IntelligenceIdRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/files': typeof FilesRouteWithChildren
   '/intelligence': typeof IntelligenceRouteWithChildren
   '/login': typeof LoginRoute
+  '/minds': typeof MindsRoute
   '/files/$id': typeof FilesIdRoute
   '/intelligence/$id': typeof IntelligenceIdRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/files': typeof FilesRouteWithChildren
   '/intelligence': typeof IntelligenceRouteWithChildren
   '/login': typeof LoginRoute
+  '/minds': typeof MindsRoute
   '/files/$id': typeof FilesIdRoute
   '/intelligence/$id': typeof IntelligenceIdRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/files'
     | '/intelligence'
     | '/login'
+    | '/minds'
     | '/files/$id'
     | '/intelligence/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/files'
     | '/intelligence'
     | '/login'
+    | '/minds'
     | '/files/$id'
     | '/intelligence/$id'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/files'
     | '/intelligence'
     | '/login'
+    | '/minds'
     | '/files/$id'
     | '/intelligence/$id'
   fileRoutesById: FileRoutesById
@@ -104,10 +116,18 @@ export interface RootRouteChildren {
   FilesRoute: typeof FilesRouteWithChildren
   IntelligenceRoute: typeof IntelligenceRouteWithChildren
   LoginRoute: typeof LoginRoute
+  MindsRoute: typeof MindsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/minds': {
+      id: '/minds'
+      path: '/minds'
+      fullPath: '/minds'
+      preLoaderRoute: typeof MindsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   FilesRoute: FilesRouteWithChildren,
   IntelligenceRoute: IntelligenceRouteWithChildren,
   LoginRoute: LoginRoute,
+  MindsRoute: MindsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
