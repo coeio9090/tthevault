@@ -1,6 +1,7 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { clearSession, getSession } from "@/lib/vault";
+import { useVaultTicker } from "@/hooks/useVaultData";
 
 function useUTC() {
   const [t, setT] = useState("");
@@ -16,17 +17,6 @@ function useUTC() {
   return t;
 }
 
-const TICKER = [
-  "// SIGNAL INTERCEPTED — GENEVA RELAY 03:44 UTC",
-  "// 14 SOVEREIGN BANKS REGISTER MICRO-OUTAGE",
-  "// VLT-007 DECLASSIFIED FOR MEMBERS",
-  "// ANCHOR PROTOCOL UPDATED",
-  "// THREE NAMES SCRUBBED FROM REGISTRY",
-  "// PROJECT GREYFIELD — SITE 3 EXPANSION CONFIRMED",
-  "// UNDERSEA CABLE TELEMETRY ANOMALY +7m",
-  "// CAPITAL FLOW: SHADOW TREASURIES REBALANCING",
-];
-
 export function VaultShell({ children }: { children: React.ReactNode }) {
   const utc = useUTC();
   const nav = useNavigate();
@@ -34,6 +24,10 @@ export function VaultShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const session = typeof window !== "undefined" ? getSession() : null;
   const path = router.state.location.pathname;
+  const tickerRows = useVaultTicker();
+  const ticker = tickerRows.length > 0
+    ? tickerRows.map((t) => t.message)
+    : ["// VAULT-SEC-NODE-7 // STANDBY"];
 
   return (
     <div className="scanlines min-h-screen bg-black text-foreground font-mono">
@@ -73,7 +67,7 @@ export function VaultShell({ children }: { children: React.ReactNode }) {
         {/* Ticker */}
         <div className="border-t border-border overflow-hidden bg-black">
           <div className="ticker py-1 text-[10px] text-primary/80">
-            {[...TICKER, ...TICKER].map((t, i) => (
+            {[...ticker, ...ticker].map((t, i) => (
               <span key={i} className="px-6">{t}</span>
             ))}
           </div>

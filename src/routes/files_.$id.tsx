@@ -1,14 +1,29 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AuthGate } from "@/components/AuthGate";
 import { VaultShell } from "@/components/VaultShell";
 import { FILES } from "@/lib/vault";
+import { useVaultFiles } from "@/hooks/useVaultData";
 
 export const Route = createFileRoute("/files_/$id")({ component: FileReader });
 
 function FileReader() {
   const { id } = Route.useParams();
-  const file = FILES.find((f) => f.id === id);
+  const { files: dbFiles } = useVaultFiles();
+  const dbHit = dbFiles.find((f) => f.id === id);
+  const staticHit = FILES.find((f) => f.id === id);
+  const file = dbHit
+    ? {
+        id: dbHit.id,
+        title: dbHit.title,
+        classification: dbHit.classification,
+        date: dbHit.created_at.slice(0, 10),
+        body: dbHit.content,
+        image_url: dbHit.image_url,
+      }
+    : staticHit
+    ? { ...staticHit, image_url: null as string | null }
+    : null;
   const [progress, setProgress] = useState(0);
   const [copied, setCopied] = useState(false);
 
@@ -48,6 +63,9 @@ function FileReader() {
         </div>
         <div className="text-[10px] text-muted-foreground">{file.id} // {file.date} // VAULT-SEC-NODE-7</div>
         <h1 className="mt-2 text-2xl md:text-3xl text-primary glow">{file.title}</h1>
+        {file.image_url && (
+          <img src={file.image_url} alt="" className="vault-img mt-6 w-full object-cover max-h-96" />
+        )}
         <pre className="mt-6 whitespace-pre-wrap text-sm text-foreground/90 leading-relaxed">{file.body}</pre>
         <div className="mt-6 flex gap-2">
           <button onClick={copy} className="border border-primary text-primary text-xs px-3 py-2 hover:bg-primary hover:text-primary-foreground">
