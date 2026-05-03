@@ -1,5 +1,5 @@
 export const ACCESS_CODE = "972137641";
-export const ADMIN_PASSWORD = "VAULT_ADMIN_2024";
+export const ADMIN_PASSWORD = "IBRA";
 export const COMMUNITY_URL = "https://secret-whisper-archive.lovable.app/";
 
 export const FILES = [
