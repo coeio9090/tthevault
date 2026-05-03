@@ -12,7 +12,7 @@ function FilesPage() {
       <p className="text-xs text-muted-foreground mb-8">// {FILES.length} declassified for members</p>
       <div className="space-y-3">
         {FILES.map((f) => (
-          <Link key={f.id} to="/files_/$id" params={{ id: f.id }} className="block border border-border hover:border-primary p-5 transition">
+          <Link key={f.id} to="/files/$id" params={{ id: f.id }} className="block border border-border hover:border-primary p-5 transition">
             <div className="flex justify-between text-[10px] text-muted-foreground">
               <span className="text-destructive">[{f.classification}]</span>
               <span>{f.id} // {f.date}</span>

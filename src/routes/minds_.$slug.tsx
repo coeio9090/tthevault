@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AuthGate } from "@/components/AuthGate";
 import { VaultShell } from "@/components/VaultShell";
 import { MINDS } from "@/lib/vault";
+import { mindChat } from "@/server/mind-chat.functions";
 
 export const Route = createFileRoute("/minds_/$slug")({ component: MindChat });
 
@@ -24,22 +25,23 @@ function MindChat() {
     if (!mind) return;
     if (!input.trim() || busy) return;
     const userText = input.trim();
-    setMsgs((m) => [...m, { role: "user", text: userText }]);
+    const next: Msg[] = [...msgs, { role: "user", text: userText }];
+    setMsgs(next);
     setInput("");
     setBusy(true);
-    // Offline canned response in character
-    setTimeout(() => {
-      const replies: Record<string, string> = {
-        "the-archivist": `// FILE 1973-11/${Math.floor(Math.random()*999)} cross-references your query. See decree A-${Math.floor(Math.random()*99)}. The document was withdrawn 14 March 1981. No copies survive. Officially.`,
-        "the-strategist": `Predictable opening. The board moved 2019. Capital flowed east, attention flowed west. Your question is six moves behind. Reposition.`,
-        "the-whisper": `they were... already there. before the question. you noticed... that's why they noticed you...`,
-        "the-oracle": `Probability matrix: 71% — the pattern holds through Q3. 22% — premature exposure. 7% — irrelevant. Watch the 71%.`,
-        "the-cipher": `0x4E4F = NO. 0x4D41594245 = MAYBE. The space between is where you live now. What's your hex?`,
-        "the-witness": `Seen it. 1987. 2008. Now. Same hands. Different gloves.`,
-      };
-      setMsgs((m) => [...m, { role: "mind", text: replies[mind.slug] || "..." }]);
+    try {
+      const res = await mindChat({
+        data: {
+          slug: mind.slug,
+          messages: next.map((m) => ({ role: m.role === "user" ? "user" : "assistant", content: m.text })),
+        },
+      });
+      setMsgs((m) => [...m, { role: "mind", text: res.text }]);
+    } catch (err) {
+      setMsgs((m) => [...m, { role: "mind", text: err instanceof Error ? err.message : "// TRANSMISSION FAILED" }]);
+    } finally {
       setBusy(false);
-    }, 800 + Math.random() * 600);
+    }
   }
 
   return (
