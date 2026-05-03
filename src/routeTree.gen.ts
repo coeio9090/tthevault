@@ -10,12 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as IntelligenceRouteImport } from './routes/intelligence'
 import { Route as FilesRouteImport } from './routes/files'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as IntelligenceIdRouteImport } from './routes/intelligence.$id'
+import { Route as FilesIdRouteImport } from './routes/files.$id'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceRoute = IntelligenceRouteImport.update({
+  id: '/intelligence',
+  path: '/intelligence',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FilesRoute = FilesRouteImport.update({
@@ -28,34 +36,73 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IntelligenceIdRoute = IntelligenceIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => IntelligenceRoute,
+} as any)
+const FilesIdRoute = FilesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => FilesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/files': typeof FilesRoute
+  '/files': typeof FilesRouteWithChildren
+  '/intelligence': typeof IntelligenceRouteWithChildren
   '/login': typeof LoginRoute
+  '/files/$id': typeof FilesIdRoute
+  '/intelligence/$id': typeof IntelligenceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/files': typeof FilesRoute
+  '/files': typeof FilesRouteWithChildren
+  '/intelligence': typeof IntelligenceRouteWithChildren
   '/login': typeof LoginRoute
+  '/files/$id': typeof FilesIdRoute
+  '/intelligence/$id': typeof IntelligenceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/files': typeof FilesRoute
+  '/files': typeof FilesRouteWithChildren
+  '/intelligence': typeof IntelligenceRouteWithChildren
   '/login': typeof LoginRoute
+  '/files/$id': typeof FilesIdRoute
+  '/intelligence/$id': typeof IntelligenceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/files' | '/login'
+  fullPaths:
+    | '/'
+    | '/files'
+    | '/intelligence'
+    | '/login'
+    | '/files/$id'
+    | '/intelligence/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/files' | '/login'
-  id: '__root__' | '/' | '/files' | '/login'
+  to:
+    | '/'
+    | '/files'
+    | '/intelligence'
+    | '/login'
+    | '/files/$id'
+    | '/intelligence/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/files'
+    | '/intelligence'
+    | '/login'
+    | '/files/$id'
+    | '/intelligence/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FilesRoute: typeof FilesRoute
+  FilesRoute: typeof FilesRouteWithChildren
+  IntelligenceRoute: typeof IntelligenceRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
 
@@ -66,6 +113,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence': {
+      id: '/intelligence'
+      path: '/intelligence'
+      fullPath: '/intelligence'
+      preLoaderRoute: typeof IntelligenceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/files': {
@@ -82,12 +136,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/intelligence/$id': {
+      id: '/intelligence/$id'
+      path: '/$id'
+      fullPath: '/intelligence/$id'
+      preLoaderRoute: typeof IntelligenceIdRouteImport
+      parentRoute: typeof IntelligenceRoute
+    }
+    '/files/$id': {
+      id: '/files/$id'
+      path: '/$id'
+      fullPath: '/files/$id'
+      preLoaderRoute: typeof FilesIdRouteImport
+      parentRoute: typeof FilesRoute
+    }
   }
 }
 
+interface FilesRouteChildren {
+  FilesIdRoute: typeof FilesIdRoute
+}
+
+const FilesRouteChildren: FilesRouteChildren = {
+  FilesIdRoute: FilesIdRoute,
+}
+
+const FilesRouteWithChildren = FilesRoute._addFileChildren(FilesRouteChildren)
+
+interface IntelligenceRouteChildren {
+  IntelligenceIdRoute: typeof IntelligenceIdRoute
+}
+
+const IntelligenceRouteChildren: IntelligenceRouteChildren = {
+  IntelligenceIdRoute: IntelligenceIdRoute,
+}
+
+const IntelligenceRouteWithChildren = IntelligenceRoute._addFileChildren(
+  IntelligenceRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FilesRoute: FilesRoute,
+  FilesRoute: FilesRouteWithChildren,
+  IntelligenceRoute: IntelligenceRouteWithChildren,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
