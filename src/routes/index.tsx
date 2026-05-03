@@ -37,7 +37,7 @@ function Home() {
 
       <section>
         <h2 className="text-xs text-muted-foreground mb-3">// LATEST CLASSIFIED FILE</h2>
-        <Link to="/files/$id" params={{ id: latest.id }} className="block border border-border hover:border-primary p-6 transition">
+        <Link to="/files_/$id" params={{ id: latest.id }} className="block border border-border hover:border-primary p-6 transition">
           <div className="flex justify-between text-[10px] text-muted-foreground">
             <span className="text-destructive">[{latest.classification}]</span>
             <span>{latest.id} // {latest.date}</span>
@@ -52,7 +52,7 @@ function Home() {
         <h2 className="text-xs text-muted-foreground mb-3">// RECENT INTELLIGENCE</h2>
         <div className="grid md:grid-cols-3 gap-4">
           {INTEL.slice(0, 3).map((i) => (
-            <Link key={i.id} to="/intelligence/$id" params={{ id: i.id }} className="border border-border hover:border-primary p-4 transition">
+            <Link key={i.id} to="/intelligence_/$id" params={{ id: i.id }} className="border border-border hover:border-primary p-4 transition">
               <div className="text-[10px] text-muted-foreground">{i.id} // {i.date}</div>
               <h3 className="mt-1 text-sm text-primary">{i.title}</h3>
               <p className="mt-2 text-[11px] text-muted-foreground line-clamp-3">{i.summary}</p>
