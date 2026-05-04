@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ADMIN_PASSWORD, isAdmin, setAdmin } from "@/lib/vault";
+import { isAdmin, setAdmin } from "@/lib/vault";
 import { VaultShell } from "@/components/VaultShell";
 import { supabase } from "@/integrations/supabase/client";
 import { useVaultFiles, useVaultIntel, useVaultTicker } from "@/hooks/useVaultData";
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/admin")({ component: Admin });
 const CATEGORIES = ["GEOPOLITICS", "CENTRAL BANKS", "SHADOW GOVERNMENT", "POWER MOVEMENTS", "CONSPIRACY"] as const;
 
 function Admin() {
-  const [authed, setAuthed] = useState(true);
+  const [, setAuthed] = useState(true);
   if (typeof window !== "undefined" && !isAdmin()) setAdmin(true);
 
   return (
