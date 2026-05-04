@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AuthGate } from "@/components/AuthGate";
 import { VaultShell } from "@/components/VaultShell";
 import { FILES, INTEL, getSession } from "@/lib/vault";
+import { useVaultFiles, useVaultIntel } from "@/hooks/useVaultData";
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -17,6 +18,9 @@ function Index() {
 
 function Home() {
   const s = typeof window !== "undefined" ? getSession() : null;
+  const { files: dbFiles } = useVaultFiles();
+  const { intel: dbIntel } = useVaultIntel();
+  const latestDb = dbFiles[0];
   const latest = FILES[0];
   return (
     <div className="space-y-12">
@@ -37,6 +41,17 @@ function Home() {
 
       <section>
         <h2 className="text-xs text-muted-foreground mb-3">// LATEST CLASSIFIED FILE</h2>
+        {latestDb ? (
+          <Link to="/files/$id" params={{ id: latestDb.id }} className="block border border-border hover:border-primary p-6 transition">
+            <div className="flex justify-between text-[10px] text-muted-foreground">
+              <span className="text-destructive">[{latestDb.classification}]</span>
+              <span>{latestDb.id.slice(0, 8)} // {latestDb.created_at.slice(0, 10)}</span>
+            </div>
+            <h3 className="mt-2 text-2xl text-primary">{latestDb.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{latestDb.content}</p>
+            <div className="mt-4 text-xs text-primary">// READ FILE →</div>
+          </Link>
+        ) : (
         <Link to="/files/$id" params={{ id: latest.id }} className="block border border-border hover:border-primary p-6 transition">
           <div className="flex justify-between text-[10px] text-muted-foreground">
             <span className="text-destructive">[{latest.classification}]</span>
@@ -46,14 +61,18 @@ function Home() {
           <p className="mt-2 text-sm text-muted-foreground">{latest.summary}</p>
           <div className="mt-4 text-xs text-primary">// READ FILE →</div>
         </Link>
+        )}
       </section>
 
       <section>
         <h2 className="text-xs text-muted-foreground mb-3">// RECENT INTELLIGENCE</h2>
         <div className="grid md:grid-cols-3 gap-4">
-          {INTEL.slice(0, 3).map((i) => (
+          {(dbIntel.length > 0
+            ? dbIntel.slice(0, 3).map((i) => ({ id: i.id, date: i.created_at.slice(0, 10), title: i.headline, summary: i.content }))
+            : INTEL.slice(0, 3)
+          ).map((i) => (
             <Link key={i.id} to="/intelligence/$id" params={{ id: i.id }} className="border border-border hover:border-primary p-4 transition">
-              <div className="text-[10px] text-muted-foreground">{i.id} // {i.date}</div>
+              <div className="text-[10px] text-muted-foreground">{String(i.id).slice(0, 8)} // {i.date}</div>
               <h3 className="mt-1 text-sm text-primary">{i.title}</h3>
               <p className="mt-2 text-[11px] text-muted-foreground line-clamp-3">{i.summary}</p>
             </Link>
