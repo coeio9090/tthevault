@@ -21,7 +21,7 @@ function Admin() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (pw.trim() === ADMIN_PASSWORD) {
+            if (pw.trim().toUpperCase() === ADMIN_PASSWORD.toUpperCase()) {
               setAdmin(true); setAuthed(true); setDenied(false);
             } else {
               setDenied(true);
