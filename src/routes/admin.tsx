@@ -11,45 +11,8 @@ export const Route = createFileRoute("/admin")({ component: Admin });
 const CATEGORIES = ["GEOPOLITICS", "CENTRAL BANKS", "SHADOW GOVERNMENT", "POWER MOVEMENTS", "CONSPIRACY"] as const;
 
 function Admin() {
-  const [authed, setAuthed] = useState(typeof window !== "undefined" ? isAdmin() : false);
-  const [pw, setPw] = useState("");
-  const [denied, setDenied] = useState(false);
-
-  if (!authed) {
-    return (
-      <div className="scanlines min-h-screen bg-black text-foreground font-mono flex items-center justify-center p-4">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (pw.trim().toUpperCase() === ADMIN_PASSWORD.toUpperCase()) {
-              setAdmin(true); setAuthed(true); setDenied(false);
-            } else {
-              setDenied(true);
-              setPw("");
-            }
-          }}
-          className="border border-border p-6 w-full max-w-sm space-y-4"
-        >
-          <h1 className="text-primary glow">// ADMIN // RESTRICTED</h1>
-          <input
-            type="password"
-            autoFocus
-            value={pw}
-            onChange={(e) => { setPw(e.target.value); if (denied) setDenied(false); }}
-            placeholder="// password"
-            className="w-full bg-input border border-border px-3 py-2 text-sm text-primary outline-none focus:border-primary"
-          />
-          {denied && (
-            <p className="text-xs text-destructive">// ACCESS DENIED — TRY AGAIN</p>
-          )}
-          <button className="w-full border border-primary text-primary py-2 text-sm hover:bg-primary hover:text-primary-foreground">
-            // AUTHENTICATE
-          </button>
-          <p className="text-[10px] text-muted-foreground">// VAULT-SEC-NODE-7</p>
-        </form>
-      </div>
-    );
-  }
+  const [authed, setAuthed] = useState(true);
+  if (typeof window !== "undefined" && !isAdmin()) setAdmin(true);
 
   return (
     <VaultShell>
