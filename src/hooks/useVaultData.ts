@@ -37,7 +37,7 @@ export function useVaultFiles() {
       if (active) { setFiles((data as VaultFile[]) || []); setLoading(false); }
     };
     load();
-    const ch = supabase.channel("vault_files_rt")
+    const ch = supabase.channel(`vault_files_rt_${crypto.randomUUID()}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "vault_files" }, () => load())
       .subscribe();
     return () => { active = false; supabase.removeChannel(ch); };
@@ -55,7 +55,7 @@ export function useVaultIntel() {
       if (active) { setIntel((data as VaultIntel[]) || []); setLoading(false); }
     };
     load();
-    const ch = supabase.channel("vault_intel_rt")
+    const ch = supabase.channel(`vault_intel_rt_${crypto.randomUUID()}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "vault_intelligence" }, () => load())
       .subscribe();
     return () => { active = false; supabase.removeChannel(ch); };
@@ -72,7 +72,7 @@ export function useVaultTicker() {
       if (active) setTicker((data as VaultTicker[]) || []);
     };
     load();
-    const ch = supabase.channel("vault_ticker_rt")
+    const ch = supabase.channel(`vault_ticker_rt_${crypto.randomUUID()}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "vault_ticker" }, () => load())
       .subscribe();
     return () => { active = false; supabase.removeChannel(ch); };
